@@ -1005,5 +1005,11 @@ vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle nvim tr
 vim.keymap.set('n', '<leader>b', ':BufferPrevious<CR>', { desc = 'Goes back to previous tab' })
 vim.keymap.set('n', '<leader>n', ':BufferNext<CR>', { desc = 'Goes to next tab' })
 
+require('nvim-tree').setup({
+  git = {
+    ignore = false,
+  },
+})
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
