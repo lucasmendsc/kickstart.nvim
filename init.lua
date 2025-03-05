@@ -244,6 +244,11 @@ require('lazy').setup({
       vim.g.barbar_auto_setup = false
     end,
     opts = {
+      icons = {
+        filetype = {
+          enabled = false, -- Disable filetype icons to remove the warning
+        }
+      }
       -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
       -- animation = true,
       -- insert_at_start = true,
