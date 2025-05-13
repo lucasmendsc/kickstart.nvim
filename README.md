@@ -4,6 +4,13 @@
 
 https://github.com/kdheepak/kickstart.nvim/assets/1813121/f3ff9a2b-c31f-44df-a4fa-8a0d7b17cf7b
 
+```
+rm -rf ~/.local/share/nvim/lazy
+rm -rf ~/.config/nvim
+vim
+git clone git@github.com:lucasmendsc/kickstart.nvim.git && nvim ~/.config/nvim/init.lua
+```
+
 A starting point for Neovim that is:
 
 * Small
