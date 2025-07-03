@@ -492,6 +492,42 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      local builtin = require('telescope.builtin')
+local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
+local pickers = require('telescope.pickers')
+local finders = require('telescope.finders')
+local conf = require('telescope.config').values
+
+function OpenOrCreateFileInCurrentDir()
+  local current_dir = vim.fn.expand('%:p:h')
+  local files = vim.fn.readdir(current_dir)
+
+  pickers.new({}, {
+    prompt_title = 'Open or Create File in ' .. current_dir,
+    finder = finders.new_table {
+      results = files,
+    },
+    sorter = conf.generic_sorter({}),
+    attach_mappings = function(prompt_bufnr, map)
+      local function open_file()
+        local entry = action_state.get_selected_entry()
+        local input = action_state.get_current_line()
+        actions.close(prompt_bufnr)
+        local target = current_dir .. '/' .. (entry and entry[1] or input)
+        vim.cmd('edit ' .. vim.fn.fnameescape(target))
+      end
+
+      map('i', '<CR>', open_file)
+      map('n', '<CR>', open_file)
+      return true
+    end,
+  }):find()
+end
+
+      vim.keymap.set('n', '<leader>nf', OpenOrCreateFileInCurrentDir, { desc = 'New File in Current Folder' })
+
+
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -1095,7 +1131,7 @@ cmp.setup({
 
 -- Ensure consistent indentation for TS and JS files
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = {"typescript", "typescriptreact", "javascript", "javascriptreact"},
+    pattern = {"typescript", "typescriptreact", "javascript", "javascriptreact", "typescript.tsx", "javascript.jsx"},
     callback = function()
         vim.opt_local.shiftwidth = 2   -- Number of spaces per indentation
         vim.opt_local.tabstop = 2      -- Number of spaces for a tab
